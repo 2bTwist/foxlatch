@@ -463,6 +463,7 @@ class OneLineInstall(unittest.TestCase):
         self.assertEqual(server.SERVER_INFO["version"], version)
         self.assertIn(f"/archive/refs/tags/v{version}.tar.gz}}", (ROOT / "get.sh").read_text())
 
+    @unittest.skipUnless(shutil.which("shellcheck"), "shellcheck is not on PATH")
     def test_get_sh_is_shellcheck_clean(self):
         out = subprocess.run(["shellcheck", "--shell=sh", str(ROOT / "get.sh")], capture_output=True, text=True)
         self.assertEqual(out.returncode, 0, out.stdout)

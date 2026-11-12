@@ -72,7 +72,12 @@ class HostLimits(test_host.HostTest):
         reply = c.read()
         self.assertFalse(reply["ok"])
         self.assertIn("expected hello: the first line is over", reply["error"])
-        self.assertIsNone(c.read())  # and the connection is closed
+        # And the connection is closed: macOS ends the stream, Linux resets it,
+        # as the host hangs up with the rest of the flood unread.
+        try:
+            self.assertIsNone(c.read())
+        except ConnectionResetError:
+            pass
         c.close()
 
     def test_an_oversized_request_is_refused_before_the_rest_of_it_arrives_and_the_connection_goes_on(self):
