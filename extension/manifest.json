@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Foxlatch",
+  "version": "1.0.4",
+  "description": "Let your coding agent drive your own Firefox, with your say-so. Each session needs your Allow; it talks only to an app on this computer.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "foxlatch@foxlatch",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": { "required": ["websiteContent", "browsingActivity"] }
+    }
+  },
+  "icons": { "48": "icon-small.svg", "96": "icon.svg" },
+  "permissions": ["nativeMessaging", "tabs", "webNavigation", "webRequest", "webRequestBlocking", "notifications", "<all_urls>"],
+  "background": { "scripts": ["core.js", "page.js", "background.js"], "persistent": true },
+  "browser_action": {
+    "default_icon": { "16": "icon-small.svg", "32": "icon-small.svg" },
+    "default_title": "Foxlatch",
+    "default_popup": "popup.html",
+    "default_area": "navbar"
+  }
+}

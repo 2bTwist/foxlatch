@@ -1,0 +1,22 @@
+dist/
+__pycache__/
+.DS_Store
+
+# Private working notes, kept out of the public repo
+AGENTS.md
+CLAUDE.md
+specs/
+.claude/
+
+# Build output and local state
+*.xpi
+*.zip
+web-ext-artifacts/
+node_modules/
+*.pyc
+*.bad-*
+.env*
+
+# Editors
+.vscode/
+.idea/

@@ -1,0 +1,478 @@
+/*
+ * Foxlatch UI. A small design system: every colour, size, radius, shadow and
+ * face is a token below; rules use only tokens (and mixes of them).
+ *
+ * Depth: one light source above. A raised surface (card, panel, button) has a
+ * faint top highlight and a soft shadow below; a recessed one (the code, the
+ * digits, the session's words, a checkbox) is shaded at its top edge. Regions
+ * are told apart by surface, never by hairlines, and nothing has a stripe on
+ * one side, a gradient button or a glow.
+ *
+ * Colour has meaning, and only these:
+ *   accent   the action a page expects, a request waiting, focus. On a
+ *            question that is Don't allow (the safe answer), never Allow.
+ *   danger   ends or removes something: Stop a session, Forget, Retry. Ghost
+ *            at rest, filled only under the pointer, so a card is never a
+ *            wall of red.
+ *   warning  a caution: what a script or protected site can do, notes that
+ *            may be incomplete, a countdown nearly out, and the hold-to-allow
+ *            button, which is risky but ends nothing.
+ *   success  a session is live (its status dot). Never a verdict on code.
+ * Two faces, one rule:
+ *   sans   prose, headings, labels, buttons
+ *   mono   machine text: the code, the six digits, a session label or host
+ *          shown as a value, countdowns, key hints, the foxlatch name
+ */
+
+/* ---- fonts: INKWELL ---- */
+/* IBM Plex (SIL OFL 1.1, plex-OFL.txt), Latin subsets, shipped in the
+ * package: an add-on page loads nothing remote. */
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 100 700; font-display: block;
+  src: url('plex-sans.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: block;
+  src: url('plex-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 600; font-display: block;
+  src: url('plex-mono-600.woff2') format('woff2');
+}
+/* ---- end fonts ---- */
+
+:root {
+  color-scheme: light dark;
+
+  /* ---- direction: INKWELL ---- */
+  /* Warm paper and ink, an ink-blue accent: blue sits clear of the green,
+   * amber and red that carry meaning. IBM Plex: engineered but warm, with a
+   * mono built for reading code. */
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-display: var(--font-sans);
+  --display-size: var(--fs-5);
+  --display-weight: var(--fw-strong);
+  --display-track: -0.01em;
+  --label-caps: normal;
+  --label-track: 0;
+
+  --paper: light-dark(#f3f4f6, #111318);
+  --raised: light-dark(#ffffff, #1a1d24);
+  --raised-2: light-dark(#f7f8fa, #262a32);
+  --recessed: light-dark(#e8eaee, #0b0d11);
+  --ink: light-dark(#15181e, #e7e9ee);
+  --muted: light-dark(#565d6b, #a1a8b4);
+  --faint: light-dark(#6e7583, #7c8391);
+  --accent: light-dark(#2552c9, #8ab4ff);
+  --on-accent: light-dark(#ffffff, #0b1630);
+  --danger: light-dark(#b42318, #ff8075);
+  --on-danger: light-dark(#ffffff, #2a0806);
+  --warning: light-dark(#8a5a00, #f2c14e);
+  --success: light-dark(#1f7a3e, #6fcf8b);
+  --focus: light-dark(#2552c9, #a9c6ff);
+  --glow: light-dark(rgb(37 82 201 / 0.05), rgb(138 180 255 / 0.05));
+  --hl: light-dark(rgb(255 255 255 / 0.9), rgb(220 230 255 / 0.07));
+  --hl-on-color: light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.3));
+  --edge: light-dark(rgb(20 28 45 / 0.11), rgb(0 0 0 / 0.55));
+  --shade: light-dark(rgb(20 28 45 / 0.16), rgb(0 0 0 / 0.6));
+  --shade-near: light-dark(rgb(20 28 45 / 0.08), rgb(0 0 0 / 0.4));
+  --well-shade: light-dark(rgb(20 28 45 / 0.14), rgb(0 0 0 / 0.7));
+  --well-edge: light-dark(rgb(20 28 45 / 0.08), rgb(0 0 0 / 0.4));
+  --syn-keyword: light-dark(#a2401f, #e79a7e);
+  --syn-string: light-dark(#4b6a1b, #b5c98a);
+  --syn-number: light-dark(#855400, #e3bf78);
+  --syn-fn: light-dark(#2a5a9c, #8fb8e8);
+  --syn-comment: light-dark(#5b6270, #8f96a3);
+  --syn-punct: light-dark(#535a67, #a6adb8);
+  /* The one gradient: a faint wash of the accent from the top of the paper. */
+  --paper-fill: radial-gradient(120% 60% at 50% -12%, var(--glow), transparent 70%), var(--paper);
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+  --radius-xl: 14px;
+  /* ---- end direction ---- */
+
+  /* Type scale (px): 11 / 12 / 13 / 15 / 20 / 28, three weights, two leadings. */
+  --fs-1: 11px;
+  --fs-2: 12px;
+  --fs-3: 13px;
+  --fs-4: 15px;
+  --fs-5: 20px;
+  --fs-6: 28px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-strong: 600;
+  --lh-tight: 1.25;
+  --lh-body: 1.5;
+  --fs-digit: 40px;
+  --fs-digit-sm: 20px;
+
+  /* Space on a 4 px base. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Shadow ladder, one light source above. */
+  --shadow-1: inset 0 1px 0 var(--hl), 0 0 0 1px var(--edge), 0 1px 2px var(--shade-near), 0 8px 20px -10px var(--shade);
+  --shadow-2: inset 0 1px 0 var(--hl), 0 0 0 1px var(--edge), 0 2px 4px var(--shade-near), 0 28px 64px -20px var(--shade);
+  --shadow-inset: inset 0 1px 3px var(--well-shade), inset 0 0 0 1px var(--well-edge);
+  --shadow-press: inset 0 1px 2px var(--well-shade), 0 0 0 1px var(--edge);
+  --ring: 1px;
+  --focus-w: 2px;
+  --focus-offset: 2px;
+
+  /* Component sizes. */
+  --control: 32px;
+  --control-sm: 26px;
+  --bar: 44px;
+  --dot: 8px;
+  --check: 16px;
+  --marker: 5px;
+  --kind-w: 72px;
+  --kind-w-sm: 62px;
+  --limits-k: 104px;
+  --tile-w: 56px;
+  --tile-h: 72px;
+  --tile-sm-w: 30px;
+  --tile-sm-h: 38px;
+  --panel-w: 600px;
+  --popup-w: 360px;
+  --script-max: 40vh;
+  --dim: 0.45;
+
+  /* Motion. */
+  --hold: 1500ms; /* HOLD_MS in ask.js */
+  --release: 180ms;
+  --deal: 320ms;
+  --deal-step: 40ms;
+
+  font: var(--fw-regular) var(--fs-3)/var(--lh-body) var(--font-sans);
+  background: var(--paper-fill);
+  background-attachment: fixed;
+  color: var(--ink);
+  -moz-osx-font-smoothing: grayscale;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+h1, h2, p, dl, dd, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+.mono { font-family: var(--font-mono); }
+[hidden] { display: none !important; }
+.quiet { font-weight: var(--fw-regular); color: var(--muted); }
+:focus-visible { outline: var(--focus-w) solid var(--focus); outline-offset: var(--focus-offset); }
+
+/* A small label over its content. */
+.party-role, .field-k, .limits dt, .remembered h2, .approvals .kind {
+  font-size: var(--fs-1); font-weight: var(--fw-medium); color: var(--muted);
+  font-variant-caps: var(--label-caps); letter-spacing: var(--label-track);
+}
+
+kbd {
+  display: inline-block; padding: 0 var(--space-1); border-radius: var(--radius-s);
+  font: var(--fw-regular) var(--fs-1)/var(--lh-body) var(--font-mono); color: var(--ink);
+  background: var(--raised-2); box-shadow: var(--shadow-1);
+}
+
+/* ---------- buttons: rest, hover, active, focus-visible, disabled ---------- */
+/* Neutral: a raised key. */
+button {
+  height: var(--control); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-m); cursor: pointer;
+  font: var(--fw-medium) var(--fs-3)/1 var(--font-sans); color: var(--ink);
+  background: var(--raised-2); box-shadow: var(--shadow-1);
+}
+button:not(:disabled):hover { background: color-mix(in oklab, var(--raised-2), var(--ink) 6%); }
+button:not(:disabled):active { background: var(--recessed); box-shadow: var(--shadow-press); }
+/* Primary: the one solid colour a page holds. */
+button.primary {
+  color: var(--on-accent); font-weight: var(--fw-strong); background: var(--accent);
+  box-shadow: inset 0 1px 0 var(--hl-on-color), 0 0 0 var(--ring) color-mix(in oklab, var(--accent), var(--paper) 30%), 0 1px 2px var(--shade-near);
+}
+button.primary:not(:disabled):hover { background: color-mix(in oklab, var(--accent), var(--ink) 14%); }
+button.primary:not(:disabled):active { background: color-mix(in oklab, var(--accent), var(--paper) 18%); box-shadow: var(--shadow-press); }
+/* Danger: outlined at rest, filled under the pointer. */
+button.danger { color: var(--danger); background: transparent; box-shadow: inset 0 0 0 var(--ring) var(--danger); }
+button.danger:not(:disabled):hover { color: var(--on-danger); background: var(--danger); }
+button.danger:not(:disabled):active { color: var(--on-danger); background: color-mix(in oklab, var(--danger), var(--paper) 22%); box-shadow: var(--shadow-press); }
+/* Disabled changes only opacity, so arming moves nothing. */
+button:disabled { opacity: var(--dim); cursor: default; }
+
+/* ---------- code tiles: the one signature element ---------- */
+.tiles { display: flex; gap: var(--space-2); align-items: center; }
+.tiles .gap { width: var(--space-4); }
+.tile {
+  display: grid; place-items: center; width: var(--tile-w); height: var(--tile-h); border-radius: var(--radius-l);
+  background: var(--recessed); box-shadow: var(--shadow-inset);
+  font: var(--fw-strong) var(--fs-digit)/1 var(--font-mono); color: var(--ink);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+.tiles.small { gap: var(--space-1); }
+.tiles.small .tile { width: var(--tile-sm-w); height: var(--tile-sm-h); font-size: var(--fs-digit-sm); border-radius: var(--radius-s); }
+.tiles.small .gap { width: var(--space-2); }
+.tiles.off .tile { color: var(--muted); background: transparent; box-shadow: inset 0 0 0 var(--ring) var(--faint); }
+
+/* ---------- confirm and ask tabs: one raised panel on the paper ---------- */
+/* The column is the viewport, never the content's width: a long code line
+ * must not widen the page and push the panel off centre. */
+.page { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: var(--space-6) var(--space-4); }
+.panel { width: min(var(--panel-w), 100%); border-radius: var(--radius-xl); background: var(--raised); box-shadow: var(--shadow-2); overflow: clip; }
+.titlebar, .panel-body, .actionbar { padding-inline: var(--space-5); }
+
+.titlebar {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-3);
+  min-height: var(--bar); padding-top: var(--space-2);
+  font: var(--fs-2)/var(--lh-body) var(--font-mono); color: var(--muted);
+}
+.titlebar .place { overflow-wrap: anywhere; }
+.titlebar .sep { padding-inline: var(--space-1); color: var(--faint); }
+.titlebar .clock {
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+  padding: 0 var(--space-2); border-radius: var(--radius-s); background: var(--recessed); box-shadow: var(--shadow-inset);
+}
+.titlebar .clock.low { color: var(--warning); font-weight: var(--fw-strong); }
+.titlebar .clock:empty { display: none; }
+
+.panel-body { padding-block: var(--space-3) var(--space-5); font-size: var(--fs-3); }
+.panel h1 {
+  font: var(--display-weight) var(--display-size)/var(--lh-tight) var(--font-display);
+  letter-spacing: var(--display-track); text-wrap: balance;
+}
+
+/* Who asks, and of what: two cells of one well. */
+.parties { margin-top: var(--space-4); display: flex; border-radius: var(--radius-l); background: var(--recessed); box-shadow: var(--shadow-inset); }
+.party { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-3) var(--space-4); }
+.party-name { font: var(--fw-regular) var(--fs-3)/var(--lh-tight) var(--font-mono); overflow-wrap: anywhere; }
+/* The project a session pairs under, in full: what remembered approvals are kept under. */
+.party-path { font: var(--fs-2)/var(--lh-tight) var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+.parties .arrow { flex: none; align-self: center; width: var(--space-5); height: auto; color: var(--faint); }
+
+.pairing-code { margin-top: var(--space-5); }
+.pairing-hint { margin-top: var(--space-3); font-size: var(--fs-4); font-weight: var(--fw-medium); }
+
+.others { margin-top: var(--space-3); color: var(--muted); }
+
+/* What a session is held to on this profile: a key, then its value, one row each. */
+.limits { margin-top: var(--space-5); display: grid; gap: var(--space-2); }
+.limits div { display: grid; grid-template-columns: var(--limits-k) 1fr; column-gap: var(--space-3); }
+.limits dt { padding-top: 0.15em; }
+.limits dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.limits .mono { font-size: var(--fs-2); }
+.all-sites { display: inline; }
+.all-sites summary { display: inline; cursor: pointer; color: var(--muted); font-size: var(--fs-2); text-decoration: underline dotted; }
+.all-sites summary:hover { color: var(--ink); }
+.all-sites[open] p { margin-top: var(--space-1); color: var(--muted); }
+
+.scope { margin-top: var(--space-4); font-size: var(--fs-2); color: var(--muted); }
+
+/* The script as it will run, in full and wrapped, so no character sits past
+ * the right edge. Each line is a block whose wrapped rows hang under its
+ * first; the newlines between them are real text, collapsed here and
+ * preserved inside each line. Line numbers and the marks on invisible
+ * characters are generated, so they are never copied or run. */
+.script {
+  --gutter-w: calc(2ch + var(--space-4));
+  margin: var(--space-4) 0 0; padding-block: var(--space-3); border-radius: var(--radius-l);
+  background: var(--recessed); box-shadow: var(--shadow-inset);
+  font: var(--fs-2)/var(--lh-body) var(--font-mono); tab-size: 2; white-space: normal; color: var(--ink);
+  max-height: var(--script-max); overflow: auto; counter-reset: line;
+}
+.script[data-digits="3"] { --gutter-w: calc(3ch + var(--space-4)); }
+.script[data-digits="4"] { --gutter-w: calc(4ch + var(--space-4)); }
+.script .ln {
+  display: block; position: relative; min-height: 1lh; counter-increment: line;
+  padding: 0 var(--space-4) 0 calc(var(--gutter-w) + var(--space-3));
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.script .ln::before {
+  content: counter(line); position: absolute; left: 0; width: var(--gutter-w); padding-right: var(--space-2);
+  text-align: right; color: var(--syn-comment); user-select: none;
+}
+.script .keyword { color: var(--syn-keyword); }
+.script .string { color: var(--syn-string); }
+.script .number { color: var(--syn-number); }
+.script .fn { color: var(--syn-fn); }
+.script .comment { color: var(--syn-comment); font-style: italic; }
+.script .punct { color: var(--syn-punct); }
+/* Isolated, so a bidi control cannot reorder the code around it. */
+.script .invisible { unicode-bidi: isolate; }
+.script .invisible::before {
+  content: attr(data-cp); padding: 0 var(--space-1); border-radius: var(--radius-s);
+  font-size: var(--fs-1); font-style: normal; color: var(--paper); background: var(--warning);
+}
+/* What allowing lets it do: a caution, so it is in the warning colour. */
+.explain { margin-top: var(--space-4); color: var(--warning); font-weight: var(--fw-medium); }
+
+/* A labelled block: a small muted name over its content. */
+.field { margin-top: var(--space-4); }
+.script + .field { margin-top: var(--space-3); }
+.field-k { margin-bottom: var(--space-1); }
+
+/* The session's own words, in a well under their label, never as the add-on's. */
+.said {
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-l);
+  background: var(--recessed); box-shadow: var(--shadow-inset);
+  font-size: var(--fs-4); overflow-wrap: anywhere;
+}
+.said.none { color: var(--muted); }
+
+/* What the code visibly reaches for: quiet, one line where it fits. */
+.notes { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-size: var(--fs-2); color: var(--muted); }
+.notes li { display: flex; align-items: center; gap: var(--space-2); }
+.notes li::before { content: ''; flex: none; width: var(--marker); height: var(--marker); border-radius: 50%; background: currentColor; }
+.notes li.warn { color: var(--warning); font-weight: var(--fw-medium); }
+.config-error { color: var(--warning); font-weight: var(--fw-strong); }
+/* A forget the host did not write, and notices about remembered approvals. */
+.approvals .failed { flex: none; max-width: 50%; font-size: var(--fs-1); color: var(--warning); font-weight: var(--fw-medium); }
+.notice { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-2); font-size: var(--fs-2); color: var(--warning); font-weight: var(--fw-medium); }
+.notice p { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.notice button { flex: none; height: var(--control-sm); padding: 0 var(--space-3); font-size: var(--fs-2); }
+
+/* Remembered approvals: what each covers, kind first, in a well; rows are
+ * told apart by spacing alone. */
+.approvals { display: grid; gap: 2px; }
+.approvals li {
+  display: flex; align-items: center; gap: var(--space-2); min-height: var(--control-sm);
+  font-size: var(--fs-2); overflow-wrap: anywhere;
+}
+.approvals .kind { flex: none; width: var(--kind-w); }
+/* The host and the hash wrap as whole pieces, never mid-name. */
+.approvals .what { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); }
+.approvals .mono.quiet { font-size: var(--fs-1); white-space: nowrap; }
+.approvals li > button { flex: none; }
+.panel .approvals, .remembered .approvals, .request .approvals, .status .approvals {
+  padding: var(--space-1) var(--space-3); border-radius: var(--radius-l); background: var(--recessed); box-shadow: var(--shadow-inset);
+}
+
+/* Remember, on its own row above the hold hint and Allow: its sentence says
+ * who else it allows, so it gets the width to read in one go. A recessed box
+ * that fills with the accent. */
+.remember {
+  display: flex; align-items: flex-start; gap: var(--space-2); flex: 1 1 100%;
+  cursor: pointer; user-select: none; overflow-wrap: anywhere;
+}
+.remember input {
+  appearance: none; flex: none; display: grid; place-content: center; margin: calc((1lh - var(--check)) / 2) 0 0;
+  width: var(--check); height: var(--check); cursor: pointer; border-radius: var(--radius-s);
+  background: var(--recessed); box-shadow: var(--shadow-inset), 0 0 0 var(--ring) var(--faint);
+}
+.remember input:checked { background: var(--accent); box-shadow: inset 0 1px 0 var(--hl-on-color); }
+.remember input:checked::before {
+  content: ''; width: var(--space-2); height: var(--space-1); transform: translateY(-1px) rotate(-45deg);
+  border: solid var(--on-accent); border-width: 0 0 var(--focus-w) var(--focus-w);
+}
+.remember input:disabled, .remember input:disabled + span { opacity: var(--dim); cursor: default; }
+.outcome { margin-top: var(--space-4); font-weight: var(--fw-strong); }
+
+/* Action bar: a tray under the card, key hints on the left, the choice on the right. */
+.actionbar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3) var(--space-4);
+  padding-block: var(--space-4); background: color-mix(in oklab, var(--raised), var(--recessed) 45%);
+}
+/* Hints too long to share the row with the buttons take their own row above them. */
+.keyhints { flex: 1 1 auto; font-size: var(--fs-2); line-height: var(--control-sm); color: var(--muted); }
+.actions { display: flex; gap: var(--space-2); justify-content: flex-end; }
+.actionbar .actions { flex: none; margin-left: auto; }
+
+/* Hold to allow: risky, so it is outlined in the warning colour, and never
+ * solid at rest, so it never outranks Don't allow. The fill tracks the
+ * press from the first frame and drains when released early, so the button
+ * shows exactly how close a yes is. */
+button.hold {
+  position: relative; overflow: hidden; touch-action: none; user-select: none;
+  color: var(--warning); background: transparent; box-shadow: inset 0 0 0 var(--ring) var(--warning);
+}
+button.hold:not(:disabled):hover { background: color-mix(in oklab, var(--warning), transparent 88%); }
+.hold .fill {
+  position: absolute; inset: 0; background: color-mix(in oklab, var(--warning), transparent 70%);
+  transform: scaleX(0); transform-origin: left; transition: transform var(--release) ease-out;
+}
+.hold .label { position: relative; }
+button.hold.holding, button.hold:not(:disabled):active { background: transparent; box-shadow: inset 0 0 0 var(--focus-w) var(--warning); }
+.hold.holding .fill { transform: scaleX(1); transition: transform var(--hold) linear; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The confirm tab is rare, so the code is dealt in once, a digit per step
+   * with the gap between triplets as one beat; nothing else moves. */
+  .deal .tile { animation: deal var(--deal) cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--beat, 0) * var(--deal-step)); }
+  .deal .tile:nth-child(2) { --beat: 1; }
+  .deal .tile:nth-child(3) { --beat: 2; }
+  .deal .tile:nth-child(5) { --beat: 4; }
+  .deal .tile:nth-child(6) { --beat: 5; }
+  .deal .tile:nth-child(7) { --beat: 6; }
+  @keyframes deal { from { opacity: 0; transform: translateY(var(--space-2)); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Progress without movement: the fill deepens over the hold instead of sweeping. */
+  .hold .fill { transform: none; opacity: 0; transition: opacity var(--release) linear; }
+  .hold.holding .fill { transform: none; opacity: 1; transition: opacity var(--hold) linear; }
+}
+@media (max-width: 480px) {
+  :root { --tile-w: 44px; --tile-h: 56px; --fs-digit: 32px; }
+  .titlebar, .panel-body, .actionbar { padding-inline: var(--space-4); }
+  .parties { flex-direction: column; }
+  .parties .arrow { align-self: center; width: var(--space-5); height: var(--space-5); padding: 0; transform: rotate(90deg); }
+  .actionbar .actions { width: 100%; }
+  .actionbar .actions button { flex: 1; }
+}
+
+/* ---------- toolbar popup: opened often, so nothing moves ---------- */
+/* Cards on the paper, one per thing: each driving session, each request,
+ * the remembered approvals. Blocked sites sit quietly on the paper below. */
+body.popup { width: var(--popup-w); background: var(--paper-fill); }
+.popup main { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-2) var(--space-2); }
+.popup header {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-3);
+  min-height: var(--bar); padding: var(--space-2) var(--space-2) var(--space-1);
+}
+.popup h1 { font: var(--display-weight) var(--fs-4)/var(--lh-tight) var(--font-display); letter-spacing: var(--display-track); overflow-wrap: anywhere; }
+.popup .product { font: var(--fs-1)/1 var(--font-mono); color: var(--muted); white-space: nowrap; }
+#status, #pending { display: flex; flex-direction: column; gap: var(--space-2); }
+#pending:empty { display: none; }
+
+.status, .request, .remembered { padding: var(--space-3) var(--space-4); border-radius: var(--radius-l); background: var(--raised); box-shadow: var(--shadow-1); }
+.status .line { display: flex; align-items: center; gap: var(--space-2); font-weight: var(--fw-medium); }
+.status .dot { flex: none; width: var(--dot); height: var(--dot); border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--faint); }
+.status.on .dot { background: var(--success); box-shadow: none; }
+/* Detail lines start under the label, past the dot and its gap. */
+.status .sub, .status .sites { margin-top: var(--space-1); padding-left: calc(var(--dot) + var(--space-2)); font-size: var(--fs-2); color: var(--muted); }
+.status .sub { font-variant-numeric: tabular-nums; }
+.status .sites { overflow-wrap: anywhere; }
+.status .sites.mono { color: var(--ink); }
+.status ul.sites { margin-left: calc(var(--dot) + var(--space-2)); padding: var(--space-1) var(--space-3); }
+/* A driving session is one card: what it is on the left, its own Stop on the right. */
+.status.on { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-3); }
+.status.on > * { grid-column: 1; }
+.status.on > button { grid-column: 2; grid-row: 1 / span 2; align-self: center; height: var(--control-sm); padding: 0 var(--space-3); font-size: var(--fs-2); }
+
+/* A request waiting on the user: the same card, marked by one accent dot
+ * before who asks; its solid accent button is the only large colour. */
+.request .who { font-weight: var(--fw-medium); overflow-wrap: anywhere; }
+.request .who::before {
+  content: ''; display: inline-block; width: var(--dot); height: var(--dot); margin-right: var(--space-2);
+  border-radius: 50%; background: var(--accent); vertical-align: 0.05em;
+}
+.request .sub { margin-top: var(--space-1); font-size: var(--fs-2); color: var(--muted); }
+.request .tiles { margin-top: var(--space-3); }
+.request .actions { margin-top: var(--space-3); }
+.request .actions button { flex: 1; }
+.request .approvals { margin-top: var(--space-1); }
+
+.remembered .project { margin-top: var(--space-2); }
+.remembered .project > p { margin-bottom: var(--space-1); font-size: var(--fs-2); overflow-wrap: anywhere; }
+.remembered .approvals li > button { height: var(--control-sm); padding: 0 var(--space-3); font-size: var(--fs-2); }
+.remembered .approvals li { min-height: var(--control); padding-block: var(--space-1); }
+.popup .approvals .kind { width: var(--kind-w-sm); }
+
+.blocked { padding: var(--space-1) var(--space-2); font-size: var(--fs-2); color: var(--muted); }
+.blocked summary { cursor: pointer; width: max-content; border-radius: var(--radius-s); }
+.blocked summary:hover { color: var(--ink); }
+.blocked p {
+  margin-top: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-l);
+  background: var(--recessed); box-shadow: var(--shadow-inset); color: var(--ink);
+  font: var(--fs-1)/var(--lh-body) var(--font-mono); overflow-wrap: anywhere;
+}
+.blocked p:empty { display: none; }

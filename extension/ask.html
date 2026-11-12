@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A session is asking · Foxlatch</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="page">
+<main class="panel" aria-labelledby="title">
+  <header class="titlebar">
+    <span class="place">foxlatch <span class="sep">/</span> <span id="profile">…</span></span>
+    <span id="expires" class="clock"></span>
+  </header>
+
+  <div class="panel-body">
+    <h1 id="title">…</h1>
+
+    <div class="parties">
+      <div class="party session">
+        <span class="party-role">Agent session</span>
+        <span class="party-name" id="label">…</span>
+      </div>
+      <svg class="arrow" viewBox="0 0 24 12" aria-hidden="true"><path d="M1 6h20M16 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      <div class="party">
+        <span class="party-role" id="target-k">…</span>
+        <span class="party-name" id="target">…</span>
+      </div>
+    </div>
+
+    <section id="said" class="field" hidden>
+      <h2 class="field-k">The session says</h2>
+      <p id="purpose" class="said"></p>
+    </section>
+    <pre id="code" class="script" hidden></pre>
+    <section id="seen" class="field" hidden>
+      <h2 class="field-k">Seen in the code</h2>
+      <ul id="notes" class="notes"></ul>
+    </section>
+    <p id="explain" class="explain"></p>
+    <p id="outcome" class="outcome" role="status" hidden></p>
+  </div>
+
+  <footer class="actionbar">
+    <label id="remember-row" class="remember" hidden><input id="remember" type="checkbox"><span id="remember-label">Remember</span></label>
+    <p id="hold-hint" class="keyhints">Hold with the pointer, <kbd>Space</kbd> or <kbd>Enter</kbd>. Letting go cancels.</p>
+    <div class="actions">
+      <button id="allow" type="button" class="hold" disabled aria-describedby="hold-hint"><span class="fill" aria-hidden="true"></span><span class="label" id="allow-label">Allow</span></button>
+      <button id="deny" type="button" class="primary" autofocus>Don’t allow</button>
+    </div>
+  </footer>
+</main>
+<script src="ui.js"></script>
+<script src="ask.js"></script>
+</body>
+</html>

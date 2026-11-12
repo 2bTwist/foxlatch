@@ -1,0 +1,21 @@
+[
+ "ask.html",
+ "ask.js",
+ "background.js",
+ "confirm.html",
+ "confirm.js",
+ "core.js",
+ "files.json",
+ "icon-small.svg",
+ "icon.svg",
+ "manifest.json",
+ "page.js",
+ "plex-OFL.txt",
+ "plex-mono-400.woff2",
+ "plex-mono-600.woff2",
+ "plex-sans.woff2",
+ "popup.html",
+ "popup.js",
+ "ui.css",
+ "ui.js"
+]

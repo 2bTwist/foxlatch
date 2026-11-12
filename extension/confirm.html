@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Allow an agent to drive this Firefox profile? · Foxlatch</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="page">
+<main class="panel" aria-labelledby="title">
+  <header class="titlebar">
+    <span class="place">foxlatch <span class="sep">/</span> pairing request</span>
+    <span id="expires" class="clock"></span>
+  </header>
+
+  <div class="panel-body">
+    <h1 id="title">An agent wants to drive this profile</h1>
+
+    <div class="parties">
+      <div class="party session">
+        <span class="party-role">Agent session</span>
+        <span class="party-name" id="label">…</span>
+        <span class="party-path" id="project"></span>
+      </div>
+      <svg class="arrow" viewBox="0 0 24 12" aria-hidden="true"><path d="M1 6h20M16 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      <div class="party">
+        <span class="party-role">Firefox profile</span>
+        <span class="party-name" id="profile">…</span>
+      </div>
+    </div>
+
+    <section class="pairing-code">
+      <div id="tiles" class="tiles deal" role="img" aria-label="Code loading"></div>
+      <p class="pairing-hint">Allow only if it matches the code your agent shows you.</p>
+    </section>
+
+    <p id="others" class="others" hidden></p>
+
+    <section id="standing" class="field" hidden>
+      <h2 class="field-k" id="standing-k"></h2>
+      <ul id="standing-list" class="approvals"></ul>
+    </section>
+
+    <dl class="limits">
+      <div><dt>Asks you first</dt><dd id="asks">…</dd></div>
+      <div id="denied-row" hidden><dt>Never opens</dt><dd id="denied" class="mono"></dd></div>
+    </dl>
+
+    <p class="scope" id="scope">Works only in its own tabs. What it reads there (page text, screenshots, addresses) goes to your agent and its model provider.</p>
+
+    <p id="outcome" class="outcome" role="status" hidden></p>
+  </div>
+
+  <footer class="actionbar">
+    <div class="actions" id="actions">
+      <button id="deny" type="button">Don’t allow</button>
+      <button id="allow" type="button" class="primary" disabled>Allow</button>
+    </div>
+  </footer>
+</main>
+<script src="ui.js"></script>
+<script src="confirm.js"></script>
+</body>
+</html>
